@@ -137,6 +137,19 @@ pub fn draw_menu(sel: &mut usize, t: f32) -> Option<usize> {
     None
 }
 
+/// viñeta suave en los bordes para dar ambiente
+pub fn draw_vignette() {
+    let sw = screen_width();
+    let sh = screen_height();
+    for (i, a) in [(0.0f32, 0.22f32), (30.0, 0.10), (60.0, 0.05)] {
+        let c = Color::new(0.0, 0.0, 0.02, a);
+        draw_rectangle(0.0, i, sw, 30.0, c);
+        draw_rectangle(0.0, sh - i - 30.0, sw, 30.0, c);
+        draw_rectangle(i, 0.0, 30.0, sh, c);
+        draw_rectangle(sw - i - 30.0, 0.0, 30.0, sh, c);
+    }
+}
+
 /// HUD durante el juego
 pub fn draw_hud(level_idx: usize, cards: usize, total_cards: usize, spirits_left: usize, portal_active: bool, flash: f32, bob: f32, moving: f32) {
     let sw = screen_width();
@@ -181,7 +194,7 @@ pub fn draw_hud(level_idx: usize, cards: usize, total_cards: usize, spirits_left
         }
     }
     let msg = if portal_active {
-        "¡Portal abierto! Entra al portal"
+        "Portal abierto! Entra al portal"
     } else {
         "Recoge los sellos para abrir el portal"
     };
