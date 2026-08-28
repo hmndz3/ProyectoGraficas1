@@ -22,6 +22,7 @@ enum State {
     Menu,
     Playing,
     Success { time_s: f32, dispelled: usize },
+    Dead,
     Victory,
 }
 
@@ -41,6 +42,9 @@ struct World {
     start_time: f64,
     flash: f32,
     cooldown: f32,
+    hp: f32,
+    hurt: f32,
+    hurt_cd: f32,
 }
 
 impl World {
@@ -91,6 +95,9 @@ impl World {
             start_time: get_time(),
             flash: 0.0,
             cooldown: 0.0,
+            hp: 100.0,
+            hurt: 0.0,
+            hurt_cd: 0.0,
         }
     }
 }
@@ -157,10 +164,35 @@ async fn main() {
                 let mdx = mp.x - last_mouse.x;
                 last_mouse = mp;
 
-                w.player.update(&w.level, dt, mdx);
+                w.player.update(&w.level, dt, mdx, def.inverted);
                 sprites::update_spirits(&mut w.sprites, &w.level, w.player.x, w.player.y, t, dt);
                 w.flash = (w.flash - dt * 5.0).max(0.0);
                 w.cooldown = (w.cooldown - dt).max(0.0);
+                w.hurt = (w.hurt - dt * 2.2).max(0.0);
+                w.hurt_cd = (w.hurt_cd - dt).max(0.0);
+
+                // el toque de un espiritu drena tu luz
+                let mut touching = false;
+                for s in w.sprites.iter() {
+                    if s.alive && s.kind == Kind::Spirit {
+                        let d2 = (s.x - w.player.x).powi(2) + (s.y - w.player.y).powi(2);
+                        if d2 < 0.45 {
+                            touching = true;
+                        }
+                    }
+                }
+                if touching {
+                    w.hp -= 32.0 * dt;
+                    w.hurt = w.hurt.max(0.75);
+                    if w.hurt_cd <= 0.0 {
+                        audio.sfx(&audio.hurt);
+                        w.hurt_cd = 0.55;
+                    }
+                }
+                if w.hp <= 0.0 {
+                    audio.sfx(&audio.death);
+                    state = State::Dead;
+                }
 
                 // disparo
                 if is_mouse_button_pressed(MouseButton::Left) && w.cooldown <= 0.0 {
@@ -281,6 +313,9 @@ async fn main() {
                     w.flash,
                     w.player.bob,
                     w.player.moving,
+                    w.hp,
+                    w.hurt,
+                    def.inverted,
                 );
                 minimap::draw_minimap(&w.level, &w.player, &w.sprites, w.portal_active);
                 draw_text(
@@ -308,6 +343,19 @@ async fn main() {
                         audio.play_music(next);
                         state = State::Playing;
                     }
+                }
+                if is_key_pressed(KeyCode::Escape) {
+                    state = State::Menu;
+                }
+            }
+            State::Dead => {
+                // ultima vista congelada del nivel de fondo
+                fb.present();
+                let idx = world.as_ref().unwrap().level_idx;
+                if ui::draw_death(idx, t) {
+                    world = Some(World::new(idx, defs[idx]));
+                    audio.play_music(idx);
+                    state = State::Playing;
                 }
                 if is_key_pressed(KeyCode::Escape) {
                     state = State::Menu;

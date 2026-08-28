@@ -239,6 +239,7 @@ pub fn draw_vignette() {
 }
 
 /// HUD durante el juego
+#[allow(clippy::too_many_arguments)]
 pub fn draw_hud(
     level_idx: usize,
     cards: usize,
@@ -248,9 +249,17 @@ pub fn draw_hud(
     flash: f32,
     bob: f32,
     moving: f32,
+    hp: f32,
+    hurt: f32,
+    inverted: bool,
 ) {
     let sw = screen_width();
     let sh = screen_height();
+
+    // destello rojo al recibir daño
+    if hurt > 0.0 {
+        draw_rectangle(0.0, 0.0, sw, sh, Color::new(0.8, 0.05, 0.05, hurt * 0.35));
+    }
 
     // báculo/farol del jugador con balanceo
     let sway_x = (bob).sin() * 14.0 * moving;
@@ -381,6 +390,56 @@ pub fn draw_hud(
         18.0,
         Color::new(0.7, 0.8, 1.0, 0.9),
     );
+
+    // barra de vida bajo el panel del nivel
+    draw_rectangle(14.0, 80.0, 240.0, 30.0, Color::new(0.02, 0.02, 0.06, 0.65));
+    draw_rectangle_lines(14.0, 80.0, 240.0, 30.0, 2.0, Color::new(0.85, 0.3, 0.35, 0.9));
+    let frac = (hp / 100.0).clamp(0.0, 1.0);
+    let bar_col = if frac > 0.5 {
+        Color::new(0.35, 0.85, 0.4, 0.95)
+    } else if frac > 0.25 {
+        Color::new(0.9, 0.75, 0.25, 0.95)
+    } else {
+        Color::new(0.9, 0.2, 0.2, 0.95)
+    };
+    draw_rectangle(18.0, 84.0, 232.0 * frac, 22.0, bar_col);
+    draw_text("VIDA", 22.0, 101.0, 18.0, Color::new(0.05, 0.05, 0.1, 0.9));
+
+    // aviso de la maldicion del Colgado
+    if inverted {
+        let blink = 0.55 + 0.45 * (get_time() as f32 * 4.0).sin();
+        let m = measure_text("CONTROLES INVERTIDOS", None, 26, 1.0);
+        draw_text(
+            "CONTROLES INVERTIDOS",
+            (sw - m.width) / 2.0,
+            110.0,
+            26.0,
+            Color::new(0.5, 0.95, 0.9, blink),
+        );
+    }
+}
+
+/// Pantalla de derrota. true = reintentar nivel.
+pub fn draw_death(level_idx: usize, t: f32) -> bool {
+    let sw = screen_width();
+    let sh = screen_height();
+    draw_rectangle(0.0, 0.0, sw, sh, Color::new(0.08, 0.0, 0.02, 0.82));
+    center_text("EL ARCANO TE HA RECLAMADO", 260.0, 54, Color::new(0.9, 0.25, 0.3, 1.0));
+    center_text(CARD_NAMES[level_idx], 310.0, 30, Color::new(0.8, 0.75, 0.85, 1.0));
+    center_text(
+        "Los espiritus consumieron tu luz",
+        355.0,
+        24,
+        Color::new(0.65, 0.6, 0.75, 1.0),
+    );
+    let blink = 0.6 + 0.4 * (t * 3.0).sin();
+    center_text(
+        "ESPACIO para reintentar  |  ESC menu",
+        430.0,
+        28,
+        Color::new(0.95, 0.85, 0.5, blink),
+    );
+    is_key_pressed(KeyCode::Space)
 }
 
 /// Pantalla de éxito al superar un nivel. true = continuar.
