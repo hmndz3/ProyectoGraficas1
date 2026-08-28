@@ -45,6 +45,7 @@ struct World {
     hp: f32,
     hurt: f32,
     hurt_cd: f32,
+    explored: Vec<bool>,
 }
 
 impl World {
@@ -79,6 +80,7 @@ impl World {
         });
 
         let cards_total = level.cards.len();
+        let cells = level.w * level.h;
         World {
             level_idx: idx,
             level,
@@ -98,6 +100,7 @@ impl World {
             hp: 100.0,
             hurt: 0.0,
             hurt_cd: 0.0,
+            explored: vec![false; cells],
         }
     }
 }
@@ -170,6 +173,27 @@ async fn main() {
                 w.cooldown = (w.cooldown - dt).max(0.0);
                 w.hurt = (w.hurt - dt * 2.2).max(0.0);
                 w.hurt_cd = (w.hurt_cd - dt).max(0.0);
+
+                // descubrir el minimapa alrededor del jugador
+                let pcx = w.player.x as i32;
+                let pcy = w.player.y as i32;
+                for oy in -4i32..=4 {
+                    for ox in -4i32..=4 {
+                        let cx = pcx + ox;
+                        let cy = pcy + oy;
+                        if cx >= 0
+                            && cy >= 0
+                            && (cx as usize) < w.level.w
+                            && (cy as usize) < w.level.h
+                        {
+                            let dx = cx as f32 + 0.5 - w.player.x;
+                            let dy = cy as f32 + 0.5 - w.player.y;
+                            if dx * dx + dy * dy < 18.0 {
+                                w.explored[cy as usize * w.level.w + cx as usize] = true;
+                            }
+                        }
+                    }
+                }
 
                 // el toque de un espiritu drena tu luz
                 let mut touching = false;
@@ -317,11 +341,18 @@ async fn main() {
                     w.hurt,
                     def.inverted,
                 );
-                minimap::draw_minimap(&w.level, &w.player, &w.sprites, w.portal_active);
+                minimap::draw_minimap(
+                    &w.level,
+                    &w.player,
+                    &w.sprites,
+                    w.portal_active,
+                    &w.explored,
+                    def.reveal,
+                );
                 draw_text(
                     format!("FPS {}", get_fps()),
-                    20.0,
-                    screen_height() - 12.0,
+                    screen_width() - 84.0,
+                    screen_height() - 14.0,
                     18.0,
                     Color::new(1.0, 1.0, 1.0, 0.5),
                 );
