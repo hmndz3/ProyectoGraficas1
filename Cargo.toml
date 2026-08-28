@@ -6,7 +6,7 @@ authors = ["Harry Mendez <harrymndz3@gmail.com>"]
 description = "ARCANA - Un raycaster de tarot: The Fool, The Hanged Man, The Hermit"
 
 [dependencies]
-macroquad = "0.4"
+macroquad = { version = "0.4", features = ["audio"] }
 
 [profile.dev]
 opt-level = 2
