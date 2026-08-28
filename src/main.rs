@@ -236,7 +236,7 @@ async fn main() {
             State::Success { time_s, dispelled } => {
                 let idx = world.as_ref().unwrap().level_idx;
                 let last = idx == defs.len() - 1;
-                if ui::draw_success(idx, time_s, dispelled, last, t) {
+                if ui::draw_success(idx, defs[idx].subtitle, time_s, dispelled, last, t) {
                     if last {
                         audio.stop_music();
                         state = State::Victory;

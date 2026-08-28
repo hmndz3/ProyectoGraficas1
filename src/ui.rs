@@ -195,13 +195,14 @@ pub fn draw_hud(level_idx: usize, cards: usize, total_cards: usize, spirits_left
 }
 
 /// Pantalla de éxito al superar un nivel. true = continuar.
-pub fn draw_success(level_idx: usize, time_s: f32, spirits: usize, last: bool, t: f32) -> bool {
+pub fn draw_success(level_idx: usize, subtitle: &str, time_s: f32, spirits: usize, last: bool, t: f32) -> bool {
     clear_background(Color::new(0.04, 0.03, 0.09, 1.0));
     starfield(t);
     let accent = CARD_COLORS[level_idx];
 
     center_text("ARCANO SUPERADO", 150.0, 58, accent);
     center_text(CARD_NAMES[level_idx], 200.0, 34, WHITE);
+    center_text(subtitle, 228.0, 22, Color::new(0.7, 0.68, 0.82, 1.0));
 
     let cw = 200.0;
     let ch = 315.0;
