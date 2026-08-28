@@ -99,9 +99,16 @@ async fn main() {
     let mut grabbed = false;
     let mut last_mouse: Vec2 = mouse_position().into();
 
+    let mut fullscreen = false;
+
     loop {
         let t = get_time() as f32;
         let dt = get_frame_time().min(0.05);
+
+        if is_key_pressed(KeyCode::F11) {
+            fullscreen = !fullscreen;
+            set_fullscreen(fullscreen);
+        }
 
         // captura del mouse solo dentro del juego
         let want_grab = matches!(state, State::Playing);
