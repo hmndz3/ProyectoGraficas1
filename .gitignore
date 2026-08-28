@@ -1,1 +1,6 @@
 /target
+
+# musica personalizada (posible copyright - no subir)
+assets/*.ogg
+assets/*.wav
+assets/*.mp3

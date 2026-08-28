@@ -60,7 +60,9 @@ música se **generan proceduralmente** al iniciar.
 - **Minimapa** en la esquina superior derecha con jugador, dirección de
   vista, sellos restantes, espíritus y portal.
 - **Música de fondo original** por nivel, sintetizada en tiempo de carga
-  (pads generativos — 0% Taylor Swift).
+  (pads generativos — 0% Taylor Swift). También puedes poner tu propia
+  canción por nivel: ver [assets/LEEME.md](assets/LEEME.md)
+  (`assets/music1.ogg`, `music2.ogg`, `music3.ogg`).
 - **Efectos de sonido** sintetizados: disparo, recoger sello, disipar
   espíritu, apertura de portal y fanfarria de victoria.
 - **Sprites animados** por cuadros: cartas flotantes con halo pulsante,

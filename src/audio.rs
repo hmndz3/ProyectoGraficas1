@@ -211,11 +211,11 @@ pub struct Audio {
     playing: Option<usize>,
 }
 
-impl Audio {
-    pub async fn load() -> Audio {
-        let load = |s: Vec<f32>| wav_bytes(&s);
+/// música sintetizada de respaldo para cada nivel
+fn synth_music(level: usize) -> Vec<f32> {
+    match level {
         // I The Fool: mayor pentatónica, luminosa
-        let fool = music_loop(
+        0 => music_loop(
             &[
                 [261.63, 329.63, 392.0],
                 [293.66, 392.0, 440.0],
@@ -225,9 +225,9 @@ impl Audio {
             &[65.41, 73.42, 82.41, 65.41],
             1.0,
             42,
-        );
+        ),
         // XII The Hanged Man: suspendida, en vaivén
-        let hanged = music_loop(
+        1 => music_loop(
             &[
                 [293.66, 349.23, 440.0],
                 [261.63, 349.23, 415.3],
@@ -237,9 +237,9 @@ impl Audio {
             &[73.42, 65.41, 61.74, 55.0],
             0.5,
             77,
-        );
+        ),
         // IX The Hermit: drone menor, profundo
-        let hermit = music_loop(
+        _ => music_loop(
             &[
                 [220.0, 261.63, 329.63],
                 [196.0, 246.94, 329.63],
@@ -249,7 +249,48 @@ impl Audio {
             &[55.0, 49.0, 43.65, 41.2],
             0.25,
             13,
-        );
+        ),
+    }
+}
+
+/// busca una pista personalizada: assets/music1.ogg / .wav, music2..., music3...
+fn custom_track(level: usize) -> Option<(String, Vec<u8>)> {
+    for ext in ["ogg", "wav"] {
+        let path = format!("assets/music{}.{}", level + 1, ext);
+        if let Ok(bytes) = std::fs::read(&path) {
+            return Some((path, bytes));
+        }
+    }
+    None
+}
+
+impl Audio {
+    pub async fn load() -> Audio {
+        let load = |s: Vec<f32>| wav_bytes(&s);
+
+        let mut music = Vec::new();
+        for i in 0..3 {
+            let mut snd = None;
+            if let Some((path, bytes)) = custom_track(i) {
+                match load_sound_from_bytes(&bytes).await {
+                    Ok(s) => {
+                        println!("Musica personalizada para el nivel {}: {}", i + 1, path);
+                        snd = Some(s);
+                    }
+                    Err(e) => eprintln!(
+                        "No se pudo cargar {} ({:?}); se usara la musica generada",
+                        path, e
+                    ),
+                }
+            }
+            let snd = match snd {
+                Some(s) => s,
+                None => load_sound_from_bytes(&wav_bytes(&synth_music(i)))
+                    .await
+                    .unwrap(),
+            };
+            music.push(snd);
+        }
 
         Audio {
             shoot: load_sound_from_bytes(&load(sfx_shoot())).await.unwrap(),
@@ -259,11 +300,7 @@ impl Audio {
             win: load_sound_from_bytes(&load(sfx_win())).await.unwrap(),
             hurt: load_sound_from_bytes(&load(sfx_hurt())).await.unwrap(),
             death: load_sound_from_bytes(&load(sfx_death())).await.unwrap(),
-            music: vec![
-                load_sound_from_bytes(&wav_bytes(&fool)).await.unwrap(),
-                load_sound_from_bytes(&wav_bytes(&hanged)).await.unwrap(),
-                load_sound_from_bytes(&wav_bytes(&hermit)).await.unwrap(),
-            ],
+            music,
             playing: None,
         }
     }
