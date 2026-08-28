@@ -102,6 +102,38 @@ fn sfx_portal() -> Vec<f32> {
         .collect()
 }
 
+/// golpe de espiritu: latigazo grave
+fn sfx_hurt() -> Vec<f32> {
+    let n = (RATE as f32 * 0.25) as usize;
+    let mut rng = 313u32;
+    (0..n)
+        .map(|i| {
+            let t = i as f32 / RATE as f32;
+            let env = (-t * 16.0).exp();
+            let f = 130.0 - t * 90.0;
+            ((t * f * std::f32::consts::TAU).sin() * 0.9 + rngf(&mut rng) * 0.25) * env
+        })
+        .collect()
+}
+
+/// derrota: descenso lugubre
+fn sfx_death() -> Vec<f32> {
+    let notes = [392.0f32, 311.13, 246.94, 185.0];
+    let n = (RATE as f32 * 1.6) as usize;
+    (0..n)
+        .map(|i| {
+            let t = i as f32 / RATE as f32;
+            let idx = ((t / 0.4) as usize).min(3);
+            let lt = t - idx as f32 * 0.4;
+            let env = (-lt * 3.5).exp();
+            ((lt * notes[idx] * std::f32::consts::TAU).sin()
+                + 0.5 * (lt * notes[idx] * 0.5 * std::f32::consts::TAU).sin())
+                * env
+                * 0.5
+        })
+        .collect()
+}
+
 /// fanfarria de victoria
 fn sfx_win() -> Vec<f32> {
     let notes = [523.25f32, 659.25, 783.99, 1046.5];
@@ -173,6 +205,8 @@ pub struct Audio {
     pub poof: Sound,
     pub portal: Sound,
     pub win: Sound,
+    pub hurt: Sound,
+    pub death: Sound,
     pub music: Vec<Sound>,
     playing: Option<usize>,
 }
@@ -223,6 +257,8 @@ impl Audio {
             poof: load_sound_from_bytes(&load(sfx_poof())).await.unwrap(),
             portal: load_sound_from_bytes(&load(sfx_portal())).await.unwrap(),
             win: load_sound_from_bytes(&load(sfx_win())).await.unwrap(),
+            hurt: load_sound_from_bytes(&load(sfx_hurt())).await.unwrap(),
+            death: load_sound_from_bytes(&load(sfx_death())).await.unwrap(),
             music: vec![
                 load_sound_from_bytes(&wav_bytes(&fool)).await.unwrap(),
                 load_sound_from_bytes(&wav_bytes(&hanged)).await.unwrap(),
