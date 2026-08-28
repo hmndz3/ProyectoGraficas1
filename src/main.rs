@@ -226,6 +226,7 @@ async fn main() {
                     def.fog, def.fog_dist, w.portal_active,
                 );
                 fb.present();
+                ui::draw_vignette();
 
                 // HUD + minimapa
                 let spirits_left = w.sprites.iter().filter(|s| s.alive && s.kind == Kind::Spirit).count();
