@@ -1,4 +1,4 @@
-# ARCANA — un raycaster de tarot
+# ARCANA: un raycaster de tarot
 
 > **Video de demostración:** _(agregar link aquí)_
 
@@ -8,22 +8,22 @@ arcanos mayores del tarot:
 
 | Arcano | Nivel | Ambiente |
 |---|---|---|
-| **0 — The Fool** | Acantilado luminoso | Cielo abierto, estandartes dorados |
-| **XII — The Hanged Man** | Anillos suspendidos | Mundo invertido: techo abismal, piso pálido |
-| **IX — The Hermit** | Criptas en penumbra | Niebla corta: solo ves lo que alumbra tu farol |
+| **0. The Fool** | Acantilado luminoso | Cielo abierto, estandartes dorados |
+| **XII. The Hanged Man** | Anillos suspendidos | Mundo invertido: techo abismal, piso pálido |
+| **IX. The Hermit** | Criptas en penumbra | Niebla corta: solo ves lo que alumbra tu farol |
 
 ## Objetivo del juego
 
 En cada nivel debes **recoger los 3 sellos** (cartas de tarot flotantes).
 Al reunirlos, el **portal se enciende**: entra en él para superar el arcano.
-Los **espíritus te persiguen y su toque drena tu vida** — dispáralos con tu
-báculo para disiparlos. Si tu luz se agota, el arcano te reclama (pantalla
-de derrota con reintento). Al superar los tres arcanos se muestra la
-pantalla final.
+Los **espíritus te persiguen y su toque drena tu vida**. Puedes dispararles
+con tu báculo para disiparlos. Si tu vida se agota, aparece la pantalla de
+derrota y puedes reintentar el nivel. Al superar los tres arcanos se
+muestra la pantalla final.
 
 **La maldición del Colgado:** en el nivel XII todos los controles están
-invertidos — movimiento, giro de teclado **y mouse** — porque el mundo se ve
-desde la horca, de cabeza.
+invertidos (movimiento, giro de teclado y mouse), porque el mundo se ve
+de cabeza.
 
 ## Cómo correr
 
@@ -33,8 +33,10 @@ Requiere [Rust](https://rustup.rs/) (estable). Luego:
 cargo run --release
 ```
 
-No hay assets externos: todas las texturas, sprites, efectos de sonido y la
-música se **generan proceduralmente** al iniciar.
+Las texturas, los sprites y los efectos de sonido se generan
+proceduralmente al iniciar. La música de cada nivel se carga desde
+`assets/music1.ogg`, `assets/music2.ogg` y `assets/music3.ogg`. Si algún
+archivo falta, ese nivel usa una pista sintetizada de respaldo.
 
 ## Controles
 
@@ -57,14 +59,13 @@ música se **generan proceduralmente** al iniciar.
 - **Rotación horizontal con mouse** (captura de cursor durante el juego).
 - **Disparo** hitscan con destello, retroceso visual y línea de visión real
   (no puedes disparar a través de paredes).
+- **Sistema de vida**: los espíritus persiguen al jugador y su contacto
+  hace daño, con barra de vida, pantalla de derrota y reintento.
 - **Minimapa** en la esquina superior derecha con jugador, dirección de
   vista, sellos restantes, espíritus y portal.
-- **Música de fondo original** por nivel, sintetizada en tiempo de carga
-  (pads generativos — 0% Taylor Swift). También puedes poner tu propia
-  canción por nivel: ver [assets/LEEME.md](assets/LEEME.md)
-  (`assets/music1.ogg`, `music2.ogg`, `music3.ogg`).
+- **Música de fondo** por nivel.
 - **Efectos de sonido** sintetizados: disparo, recoger sello, disipar
-  espíritu, apertura de portal y fanfarria de victoria.
+  espíritu, daño, apertura de portal y fanfarria de victoria.
 - **Sprites animados** por cuadros: cartas flotantes con halo pulsante,
   espíritus ondulantes y portal de orbes giratorios.
 - **Pantalla de bienvenida** con selección entre los tres niveles.
@@ -73,8 +74,7 @@ música se **generan proceduralmente** al iniciar.
 - Niebla por distancia, gradientes de cielo/piso, viñeta ambiental y
   paleta propia por arcano.
 - Test automático (`cargo test`) que verifica por BFS que cada sello,
-  espíritu y portal es alcanzable desde el spawn — niveles siempre
-  completables.
+  espíritu y portal es alcanzable desde el spawn.
 
 ## Estructura
 
