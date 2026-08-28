@@ -145,8 +145,48 @@ pub const LEVEL_HANGED: LevelDef = LevelDef {
     seed: 22,
 };
 
+// ------------------------------------------------------------------
+// NIVEL III — THE HERMIT (El Ermitaño): criptas en penumbra, la niebla
+// corta obliga a avanzar a la luz del farol.
+// ------------------------------------------------------------------
+pub const LEVEL_HERMIT: LevelDef = LevelDef {
+    name: "THE HERMIT",
+    subtitle: "IX - La luz interior",
+    grid: &[
+        "11111111111111111111",
+        "1P.....1.....S.....1",
+        "1.5555.1.55555555..1",
+        "1.5..5.1.5......5..1",
+        "1.5C.5.....S....5..1",
+        "1.5..5.1.5..C...5..1",
+        "1.55.5.1.55555.55..1",
+        "1..................1",
+        "1.22222.111.22222..1",
+        "1.2...2..1..2...2..1",
+        "1.2.S.2..1..2.X.2..1",
+        "1.2...2..1..2...2..1",
+        "1.22.22..1..22.22..1",
+        "1........1.......C.1",
+        "11111111111111111111",
+    ],
+    ceil: [0.02, 0.02, 0.05],
+    floor: [0.08, 0.08, 0.11],
+    fog: [0.01, 0.01, 0.03],
+    fog_dist: 8.0,
+    wall_tints: [
+        [0.36, 0.37, 0.44], // 1 piedra de cripta
+        [0.30, 0.33, 0.46], // 2 ladrillo helado
+        [0.42, 0.44, 0.58], // 3 estandarte gris
+        [0.30, 0.25, 0.20], // 4 madera vieja
+        [0.28, 0.28, 0.36], // 5 runas
+    ],
+    glow: [1.00, 0.80, 0.35],
+    accent: [0.92, 0.88, 0.70],
+    seed: 33,
+};
+
 pub fn all_levels() -> Vec<&'static LevelDef> {
-    vec![&LEVEL_FOOL, &LEVEL_HANGED]
+    vec![&LEVEL_FOOL, &LEVEL_HANGED, &LEVEL_HERMIT]
 }
 
 #[cfg(test)]
