@@ -16,8 +16,14 @@ arcanos mayores del tarot:
 
 En cada nivel debes **recoger los 3 sellos** (cartas de tarot flotantes).
 Al reunirlos, el **portal se enciende**: entra en él para superar el arcano.
-Espíritus errantes vagan por los pasillos — puedes **disiparlos disparando**
-con tu báculo. Al superar los tres arcanos se muestra la pantalla final.
+Los **espíritus te persiguen y su toque drena tu vida** — dispáralos con tu
+báculo para disiparlos. Si tu luz se agota, el arcano te reclama (pantalla
+de derrota con reintento). Al superar los tres arcanos se muestra la
+pantalla final.
+
+**La maldición del Colgado:** en el nivel XII todos los controles están
+invertidos — movimiento, giro de teclado **y mouse** — porque el mundo se ve
+desde la horca, de cabeza.
 
 ## Cómo correr
 

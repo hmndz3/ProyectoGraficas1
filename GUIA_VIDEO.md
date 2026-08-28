@@ -33,7 +33,13 @@ Guion sugerido (2–3 minutos) que muestra **todos** los puntos de la rúbrica.
 10. **Pantalla de éxito** (10 pts): entra al portal y deja ver la pantalla
     de "ARCANO SUPERADO" con las estadísticas.
 11. `ESPACIO` para pasar a **The Hanged Man**: enseña el cambio total de
-    paleta (mundo invertido) unos segundos.
+    paleta y la **maldición**: los controles (mouse incluido) están
+    invertidos — muévete un poco para que se note el letreo
+    "CONTROLES INVERTIDOS" parpadeando.
+11b. **Daño de espíritus**: deja que un espíritu te toque un momento — la
+    pantalla parpadea en rojo, suena el golpe y baja la barra de VIDA. Si
+    quieres, muere a propósito para enseñar la pantalla de derrota y el
+    reintento con `ESPACIO`.
 12. `Esc` al menú y entra directo a **The Hermit** con `3` para demostrar
     la **selección de niveles** — muestra la oscuridad con niebla corta.
 13. (Si hay tiempo) completa The Hermit para cerrar con la pantalla de
