@@ -132,7 +132,7 @@ fn music_loop(chords: &[[f32; 3]], bass: &[f32], bright: f32, seed: u32) -> Vec<
     for i in 0..(chords.len() * 2) {
         let t0 = (rngf(&mut rng) * 0.5 + 0.5) * total;
         let ci = ((t0 / chord_dur) as usize).min(chords.len() - 1);
-        let note = chords[ci][(i % 3) as usize] * 2.0;
+        let note = chords[ci][((i % 3))] * 2.0;
         bells.push((t0, note));
     }
 

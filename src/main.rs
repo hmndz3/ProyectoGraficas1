@@ -158,7 +158,7 @@ async fn main() {
                         let dx = s.x - w.player.x;
                         let dy = s.y - w.player.y;
                         let dist = (dx * dx + dy * dy).sqrt();
-                        if dist > 14.0 || dist < 0.2 {
+                        if !(0.2..=14.0).contains(&dist) {
                             continue;
                         }
                         let along = dx * fx + dy * fy;
@@ -173,7 +173,7 @@ async fn main() {
                         if hit.dist + 0.2 < dist {
                             continue; // pared en medio
                         }
-                        if best.map_or(true, |(_, bd)| dist < bd) {
+                        if best.is_none_or(|(_, bd)| dist < bd) {
                             best = Some((i, dist));
                         }
                     }
@@ -235,7 +235,7 @@ async fn main() {
                     w.portal_active, w.flash, w.player.bob, w.player.moving,
                 );
                 minimap::draw_minimap(&w.level, &w.player, &w.sprites, w.portal_active);
-                draw_text(&format!("FPS {}", get_fps()), 20.0, screen_height() - 12.0, 18.0, Color::new(1.0, 1.0, 1.0, 0.5));
+                draw_text(format!("FPS {}", get_fps()), 20.0, screen_height() - 12.0, 18.0, Color::new(1.0, 1.0, 1.0, 0.5));
 
                 if is_key_pressed(KeyCode::Escape) {
                     state = State::Menu;

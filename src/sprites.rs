@@ -57,7 +57,7 @@ pub fn card_frames(accent: [f32; 3]) -> Vec<Tex> {
         for y in 9..53 {
             for x in 18..46 {
                 let yy = y + bob;
-                let border = x < 20 || x >= 44 || y < 11 || y >= 51;
+                let border = !(20..44).contains(&x) || !(11..51).contains(&y);
                 let c = if border {
                     [235, 200, 90, 255]
                 } else {

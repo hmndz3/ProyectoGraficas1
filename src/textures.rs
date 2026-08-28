@@ -131,7 +131,7 @@ pub fn banner(tint: [f32; 3], accent: [f32; 3], seed: u32) -> Tex {
         for x in 0..TS {
             let wave = ((y as f32 * 0.4).sin() * 1.5) as i32;
             let xi = (x as i32 + wave).rem_euclid(TS as i32) as usize;
-            let border = xi < 6 || xi >= TS - 6 || y < 4 || y >= TS - 4;
+            let border = !(6..TS - 6).contains(&xi) || !(4..TS - 4).contains(&y);
             let n = hash((x / 4) as u32, (y / 4) as u32, seed) * 0.12;
             let base = if border { 0.45 } else { 0.85 - n };
             // estrella de 4 puntas al centro
