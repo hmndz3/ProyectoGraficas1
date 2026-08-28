@@ -181,7 +181,7 @@ pub fn draw_hud(level_idx: usize, cards: usize, total_cards: usize, spirits_left
     // panel inferior izquierdo: cartas recogidas
     draw_rectangle(14.0, sh - 96.0, 250.0, 82.0, Color::new(0.02, 0.02, 0.06, 0.65));
     draw_rectangle_lines(14.0, sh - 96.0, 250.0, 82.0, 2.0, Color::new(0.9, 0.8, 0.5, 0.8));
-    draw_text("SELLOS", 26.0, sh - 72.0, 22.0, Color::new(0.9, 0.8, 0.5, 1.0));
+    draw_text(&format!("SELLOS  {}/{}", cards, total_cards), 26.0, sh - 72.0, 22.0, Color::new(0.9, 0.8, 0.5, 1.0));
     for i in 0..total_cards {
         let x = 26.0 + i as f32 * 40.0;
         let y = sh - 62.0;
