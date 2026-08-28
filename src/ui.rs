@@ -199,6 +199,14 @@ pub fn draw_menu(sel: &mut usize, t: f32) -> Option<usize> {
     if is_key_pressed(KeyCode::Left) || is_key_pressed(KeyCode::A) {
         *sel = (*sel + 2) % 3;
     }
+    draw_text(
+        "Harry Mendez - Graficas por Computadora 2026",
+        16.0,
+        screen_height() - 16.0,
+        18.0,
+        Color::new(0.5, 0.5, 0.65, 0.8),
+    );
+
     if is_key_pressed(KeyCode::Key1) {
         *sel = 0;
         return Some(0);
