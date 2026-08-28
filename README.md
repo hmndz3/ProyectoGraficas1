@@ -1,6 +1,6 @@
 # ARCANA: un raycaster de tarot
 
-> **Video de demostración:** _(agregar link aquí)_
+> **Video de demostración:** https://youtu.be/3hdvchkXZS4
 
 Proyecto 3 de Gráficas por Computadora: un **ray caster** escrito en **Rust**
 (motor propio, sin engine) con tres niveles jugables inspirados en tres
