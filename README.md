@@ -33,10 +33,8 @@ Requiere [Rust](https://rustup.rs/) (estable). Luego:
 cargo run --release
 ```
 
-Las texturas, los sprites y los efectos de sonido se generan
-proceduralmente al iniciar. La música de cada nivel se carga desde
-`assets/music1.ogg`, `assets/music2.ogg` y `assets/music3.ogg`. Si algún
-archivo falta, ese nivel usa una pista sintetizada de respaldo.
+No hay assets externos: las texturas, los sprites, los efectos de sonido
+y la música se generan proceduralmente al iniciar.
 
 ## Controles
 
@@ -63,7 +61,7 @@ archivo falta, ese nivel usa una pista sintetizada de respaldo.
   hace daño, con barra de vida, pantalla de derrota y reintento.
 - **Minimapa** en la esquina superior derecha con jugador, dirección de
   vista, sellos restantes, espíritus y portal.
-- **Música de fondo** por nivel.
+- **Música de fondo** original por nivel, sintetizada al cargar.
 - **Efectos de sonido** sintetizados: disparo, recoger sello, disipar
   espíritu, daño, apertura de portal y fanfarria de victoria.
 - **Sprites animados** por cuadros: cartas flotantes con halo pulsante,

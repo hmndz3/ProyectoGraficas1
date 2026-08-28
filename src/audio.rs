@@ -253,43 +253,17 @@ fn synth_music(level: usize) -> Vec<f32> {
     }
 }
 
-/// busca una pista personalizada: assets/music1.ogg / .wav, music2..., music3...
-fn custom_track(level: usize) -> Option<(String, Vec<u8>)> {
-    for ext in ["ogg", "wav"] {
-        let path = format!("assets/music{}.{}", level + 1, ext);
-        if let Ok(bytes) = std::fs::read(&path) {
-            return Some((path, bytes));
-        }
-    }
-    None
-}
-
 impl Audio {
     pub async fn load() -> Audio {
         let load = |s: Vec<f32>| wav_bytes(&s);
 
         let mut music = Vec::new();
         for i in 0..3 {
-            let mut snd = None;
-            if let Some((path, bytes)) = custom_track(i) {
-                match load_sound_from_bytes(&bytes).await {
-                    Ok(s) => {
-                        println!("Musica personalizada para el nivel {}: {}", i + 1, path);
-                        snd = Some(s);
-                    }
-                    Err(e) => eprintln!(
-                        "No se pudo cargar {} ({:?}); se usara la musica generada",
-                        path, e
-                    ),
-                }
-            }
-            let snd = match snd {
-                Some(s) => s,
-                None => load_sound_from_bytes(&wav_bytes(&synth_music(i)))
+            music.push(
+                load_sound_from_bytes(&wav_bytes(&synth_music(i)))
                     .await
                     .unwrap(),
-            };
-            music.push(snd);
+            );
         }
 
         Audio {
