@@ -15,6 +15,7 @@ pub fn draw_minimap(level: &Level, player: &Player, sprites: &[Sprite], portal_a
 
     draw_rectangle(ox - 4.0, oy - 4.0, w + 8.0, h + 8.0, Color::new(0.02, 0.02, 0.05, 0.72));
     draw_rectangle_lines(ox - 4.0, oy - 4.0, w + 8.0, h + 8.0, 2.0, Color::new(0.9, 0.8, 0.5, 0.9));
+    draw_text("MAPA", ox, oy + h + 18.0, 18.0, Color::new(0.9, 0.8, 0.5, 0.9));
 
     let wall_colors = [
         Color::new(0.85, 0.82, 0.75, 0.95),
