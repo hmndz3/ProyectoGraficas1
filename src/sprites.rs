@@ -194,13 +194,18 @@ pub fn update_spirits(sprites: &mut [Sprite], level: &Level, px: f32, py: f32, t
         let dx = px - s.x;
         let dy = py - s.y;
         let d = (dx * dx + dy * dy).sqrt().max(0.001);
-        let (mut vx, mut vy) = if d < 7.0 && d > 1.2 {
-            (dx / d, dy / d)
+        // cazan al jugador si está cerca; si no, vagan sin rumbo
+        let (mut vx, mut vy, speed) = if d < 8.0 {
+            (dx / d, dy / d, 1.05)
         } else {
-            ((t * 0.7 + s.phase).cos(), (t * 0.9 + s.phase * 2.0).sin())
+            (
+                (t * 0.7 + s.phase).cos(),
+                (t * 0.9 + s.phase * 2.0).sin(),
+                0.5,
+            )
         };
-        vx *= 0.55 * dt;
-        vy *= 0.55 * dt;
+        vx *= speed * dt;
+        vy *= speed * dt;
         if !level.solid(s.x + vx, s.y) {
             s.x += vx;
         }
