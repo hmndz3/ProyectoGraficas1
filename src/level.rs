@@ -105,8 +105,48 @@ pub const LEVEL_FOOL: LevelDef = LevelDef {
     seed: 11,
 };
 
+// ------------------------------------------------------------------
+// NIVEL II — THE HANGED MAN (El Colgado): anillos suspendidos, mundo
+// invertido: el techo es abismo oscuro y el piso brilla pálido.
+// ------------------------------------------------------------------
+pub const LEVEL_HANGED: LevelDef = LevelDef {
+    name: "THE HANGED MAN",
+    subtitle: "XII - La perspectiva invertida",
+    grid: &[
+        "11111111111111111111",
+        "1P...............S.1",
+        "1.2222222222222222.1",
+        "1.2.............C2.1",
+        "1.2.33333.333333.2.1",
+        "1.2.3....S.....3.2.1",
+        "1.2.3.44444444.3.2.1",
+        "1.2.3.4.C.X..4.3.2.1",
+        "1.2.3.44444.44.3.2.1",
+        "1.2.3..S.......3.2.1",
+        "1.2.333333333333.2.1",
+        "1.2......C.......2.1",
+        "1.2222222.22222222.1",
+        "1..S...............1",
+        "11111111111111111111",
+    ],
+    ceil: [0.05, 0.03, 0.11],
+    floor: [0.48, 0.45, 0.58],
+    fog: [0.13, 0.08, 0.22],
+    fog_dist: 13.0,
+    wall_tints: [
+        [0.42, 0.40, 0.55], // 1 pizarra
+        [0.22, 0.58, 0.58], // 2 ladrillo verdemar
+        [0.52, 0.30, 0.68], // 3 estandarte violeta
+        [0.34, 0.26, 0.42], // 4 madera fria
+        [0.30, 0.30, 0.45], // 5 runas
+    ],
+    glow: [0.35, 0.95, 0.90],
+    accent: [0.85, 0.95, 1.00],
+    seed: 22,
+};
+
 pub fn all_levels() -> Vec<&'static LevelDef> {
-    vec![&LEVEL_FOOL]
+    vec![&LEVEL_FOOL, &LEVEL_HANGED]
 }
 
 #[cfg(test)]
