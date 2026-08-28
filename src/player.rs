@@ -15,11 +15,12 @@ pub struct Player {
     pub dir: f32,
     pub bob: f32,     // fase de balanceo al caminar
     pub moving: f32,  // cuanta velocidad lleva (para el bob del arma)
+    pub sens: f32,    // multiplicador de sensibilidad del mouse
 }
 
 impl Player {
     pub fn new(spawn: (f32, f32), dir: f32) -> Self {
-        Player { x: spawn.0, y: spawn.1, dir, bob: 0.0, moving: 0.0 }
+        Player { x: spawn.0, y: spawn.1, dir, bob: 0.0, moving: 0.0, sens: 1.0 }
     }
 
     pub fn dir_vec(&self) -> (f32, f32) {
@@ -43,8 +44,15 @@ impl Player {
     }
 
     pub fn update(&mut self, level: &Level, dt: f32, mouse_dx: f32) {
+        // sensibilidad ajustable con [ y ]
+        if is_key_pressed(KeyCode::LeftBracket) {
+            self.sens = (self.sens - 0.2).max(0.2);
+        }
+        if is_key_pressed(KeyCode::RightBracket) {
+            self.sens = (self.sens + 0.2).min(3.0);
+        }
         // rotación: mouse horizontal + flechas como respaldo
-        self.dir += mouse_dx * MOUSE_SENS;
+        self.dir += mouse_dx * MOUSE_SENS * self.sens;
         if is_key_down(KeyCode::Left) {
             self.dir -= ROT_SPEED * dt;
         }
