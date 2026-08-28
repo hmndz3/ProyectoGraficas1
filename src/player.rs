@@ -50,7 +50,7 @@ impl Player {
         }
     }
 
-    pub fn update(&mut self, level: &Level, dt: f32, mouse_dx: f32) {
+    pub fn update(&mut self, level: &Level, dt: f32, mouse_dx: f32, inverted: bool) {
         // sensibilidad ajustable con [ y ]
         if is_key_pressed(KeyCode::LeftBracket) {
             self.sens = (self.sens - 0.2).max(0.2);
@@ -58,13 +58,15 @@ impl Player {
         if is_key_pressed(KeyCode::RightBracket) {
             self.sens = (self.sens + 0.2).min(3.0);
         }
+        // en The Hanged Man el mundo esta de cabeza: todo se invierte
+        let inv = if inverted { -1.0 } else { 1.0 };
         // rotación: mouse horizontal + flechas como respaldo
-        self.dir += mouse_dx * MOUSE_SENS * self.sens;
+        self.dir += mouse_dx * MOUSE_SENS * self.sens * inv;
         if is_key_down(KeyCode::Left) {
-            self.dir -= ROT_SPEED * dt;
+            self.dir -= ROT_SPEED * dt * inv;
         }
         if is_key_down(KeyCode::Right) {
-            self.dir += ROT_SPEED * dt;
+            self.dir += ROT_SPEED * dt * inv;
         }
 
         let (fx, fy) = self.dir_vec();
@@ -72,20 +74,20 @@ impl Player {
         let mut mx = 0.0;
         let mut my = 0.0;
         if is_key_down(KeyCode::W) || is_key_down(KeyCode::Up) {
-            mx += fx;
-            my += fy;
+            mx += fx * inv;
+            my += fy * inv;
         }
         if is_key_down(KeyCode::S) || is_key_down(KeyCode::Down) {
-            mx -= fx;
-            my -= fy;
+            mx -= fx * inv;
+            my -= fy * inv;
         }
         if is_key_down(KeyCode::A) {
-            mx -= sx;
-            my -= sy;
+            mx -= sx * inv;
+            my -= sy * inv;
         }
         if is_key_down(KeyCode::D) {
-            mx += sx;
-            my += sy;
+            mx += sx * inv;
+            my += sy * inv;
         }
 
         let len = (mx * mx + my * my).sqrt();

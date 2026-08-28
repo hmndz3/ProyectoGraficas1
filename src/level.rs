@@ -1,4 +1,4 @@
-// Definición de niveles: los tres arcanos del tarot.
+﻿// DefiniciÃ³n de niveles: los tres arcanos del tarot.
 
 pub struct LevelDef {
     pub name: &'static str,
@@ -12,6 +12,7 @@ pub struct LevelDef {
     pub glow: [f32; 3],
     pub accent: [f32; 3],
     pub seed: u32,
+    pub inverted: bool, // controles invertidos (The Hanged Man)
 }
 
 pub struct Level {
@@ -82,7 +83,7 @@ impl Level {
 }
 
 // ---------------------------------------------------------------
-// NIVEL I — THE FOOL (El Loco): acantilado luminoso, cielo abierto
+// NIVEL I â€” THE FOOL (El Loco): acantilado luminoso, cielo abierto
 // ---------------------------------------------------------------
 pub const LEVEL_FOOL: LevelDef = LevelDef {
     name: "THE FOOL",
@@ -118,11 +119,12 @@ pub const LEVEL_FOOL: LevelDef = LevelDef {
     glow: [1.0, 0.85, 0.3],
     accent: [1.0, 1.0, 1.0],
     seed: 11,
+    inverted: false,
 };
 
 // ------------------------------------------------------------------
-// NIVEL II — THE HANGED MAN (El Colgado): anillos suspendidos, mundo
-// invertido: el techo es abismo oscuro y el piso brilla pálido.
+// NIVEL II â€” THE HANGED MAN (El Colgado): anillos suspendidos, mundo
+// invertido: el techo es abismo oscuro y el piso brilla pÃ¡lido.
 // ------------------------------------------------------------------
 pub const LEVEL_HANGED: LevelDef = LevelDef {
     name: "THE HANGED MAN",
@@ -158,10 +160,11 @@ pub const LEVEL_HANGED: LevelDef = LevelDef {
     glow: [0.35, 0.95, 0.90],
     accent: [0.85, 0.95, 1.00],
     seed: 22,
+    inverted: true,
 };
 
 // ------------------------------------------------------------------
-// NIVEL III — THE HERMIT (El Ermitaño): criptas en penumbra, la niebla
+// NIVEL III â€” THE HERMIT (El ErmitaÃ±o): criptas en penumbra, la niebla
 // corta obliga a avanzar a la luz del farol.
 // ------------------------------------------------------------------
 pub const LEVEL_HERMIT: LevelDef = LevelDef {
@@ -198,6 +201,7 @@ pub const LEVEL_HERMIT: LevelDef = LevelDef {
     glow: [1.00, 0.80, 0.35],
     accent: [0.92, 0.88, 0.70],
     seed: 33,
+    inverted: false,
 };
 
 pub fn all_levels() -> Vec<&'static LevelDef> {
@@ -208,7 +212,7 @@ pub fn all_levels() -> Vec<&'static LevelDef> {
 mod tests {
     use super::*;
 
-    // BFS desde el spawn: toda carta, espíritu y el portal deben ser alcanzables
+    // BFS desde el spawn: toda carta, espÃ­ritu y el portal deben ser alcanzables
     fn check_reachable(def: &LevelDef) {
         let lv = Level::parse(def);
         let mut vis = vec![false; lv.w * lv.h];
