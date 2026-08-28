@@ -43,7 +43,11 @@ fn sfx_shoot() -> Vec<f32> {
             let t = i as f32 / RATE as f32;
             let env = (-t * 22.0).exp();
             let f = 750.0 - t * 2400.0;
-            let sq = if (t * f.max(60.0)).fract() < 0.5 { 0.5 } else { -0.5 };
+            let sq = if (t * f.max(60.0)).fract() < 0.5 {
+                0.5
+            } else {
+                -0.5
+            };
             (rngf(&mut rng) * 0.6 + sq * 0.5) * env * 0.8
         })
         .collect()
@@ -132,7 +136,7 @@ fn music_loop(chords: &[[f32; 3]], bass: &[f32], bright: f32, seed: u32) -> Vec<
     for i in 0..(chords.len() * 2) {
         let t0 = (rngf(&mut rng) * 0.5 + 0.5) * total;
         let ci = ((t0 / chord_dur) as usize).min(chords.len() - 1);
-        let note = chords[ci][((i % 3))] * 2.0;
+        let note = chords[ci][(i % 3)] * 2.0;
         bells.push((t0, note));
     }
 
@@ -154,7 +158,8 @@ fn music_loop(chords: &[[f32; 3]], bass: &[f32], bright: f32, seed: u32) -> Vec<
             for (bt, bf) in &bells {
                 let dt = t - bt;
                 if dt > 0.0 && dt < 1.2 {
-                    s += (dt * bf * std::f32::consts::TAU).sin() * (-dt * 4.0).exp() * 0.12 * bright;
+                    s +=
+                        (dt * bf * std::f32::consts::TAU).sin() * (-dt * 4.0).exp() * 0.12 * bright;
                 }
             }
             s * 0.55
@@ -230,7 +235,10 @@ impl Audio {
     pub fn sfx(&self, s: &Sound) {
         play_sound(
             s,
-            PlaySoundParams { looped: false, volume: 0.8 },
+            PlaySoundParams {
+                looped: false,
+                volume: 0.8,
+            },
         );
     }
 
@@ -241,7 +249,10 @@ impl Audio {
         self.stop_music();
         play_sound(
             &self.music[level],
-            PlaySoundParams { looped: true, volume: 0.4 },
+            PlaySoundParams {
+                looped: true,
+                volume: 0.4,
+            },
         );
         self.playing = Some(level);
     }

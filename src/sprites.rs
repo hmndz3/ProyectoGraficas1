@@ -44,12 +44,17 @@ pub fn card_frames(accent: [f32; 3]) -> Vec<Tex> {
                 let d = ((dx * dx + dy * dy) as f32).sqrt();
                 if d > 24.0 && d < 30.0 {
                     let a = ((30.0 - d) / 6.0 * 120.0 * pulse) as u8;
-                    set_a(&mut t, x, y, [
-                        (accent[0] * 255.0) as u8,
-                        (accent[1] * 255.0) as u8,
-                        (accent[2] * 255.0) as u8,
-                        a,
-                    ]);
+                    set_a(
+                        &mut t,
+                        x,
+                        y,
+                        [
+                            (accent[0] * 255.0) as u8,
+                            (accent[1] * 255.0) as u8,
+                            (accent[2] * 255.0) as u8,
+                            a,
+                        ],
+                    );
                 }
             }
         }
@@ -92,7 +97,11 @@ pub fn spirit_frames() -> Vec<Tex> {
             let dx = x - 32;
             let head_half = {
                 let v = 20 * 20 - dx * dx;
-                if v > 0 { (v as f32).sqrt() as i32 } else { -1 }
+                if v > 0 {
+                    (v as f32).sqrt() as i32
+                } else {
+                    -1
+                }
             };
             if head_half >= 0 {
                 let top = 26 - head_half;
@@ -132,12 +141,17 @@ pub fn portal_frames(color: [f32; 3]) -> Vec<Tex> {
                 let d = (dx * dx + dy * dy).sqrt();
                 if d < 22.0 {
                     let a = ((22.0 - d) / 22.0 * 90.0) as u8;
-                    set_a(&mut t, x, y, [
-                        (color[0] * 160.0) as u8,
-                        (color[1] * 160.0) as u8,
-                        (color[2] * 160.0) as u8,
-                        a,
-                    ]);
+                    set_a(
+                        &mut t,
+                        x,
+                        y,
+                        [
+                            (color[0] * 160.0) as u8,
+                            (color[1] * 160.0) as u8,
+                            (color[2] * 160.0) as u8,
+                            a,
+                        ],
+                    );
                 }
             }
         }
@@ -151,12 +165,17 @@ pub fn portal_frames(color: [f32; 3]) -> Vec<Tex> {
                     let d2 = x * x + y * y;
                     if d2 <= 9 {
                         let al = if d2 <= 4 { 255 } else { 140 };
-                        set_a(&mut t, ox as i32 + x, oy as i32 + y, [
-                            (color[0] * 255.0) as u8,
-                            (color[1] * 255.0) as u8,
-                            (color[2] * 255.0) as u8,
-                            al,
-                        ]);
+                        set_a(
+                            &mut t,
+                            ox as i32 + x,
+                            oy as i32 + y,
+                            [
+                                (color[0] * 255.0) as u8,
+                                (color[1] * 255.0) as u8,
+                                (color[2] * 255.0) as u8,
+                                al,
+                            ],
+                        );
                     }
                 }
             }
@@ -243,7 +262,11 @@ pub fn render_sprites(
         let tex = &frames[fi];
 
         // tinte: portal inactivo se ve apagado
-        let tint = if s.kind == Kind::Portal && !portal_active { 0.35 } else { 1.0 };
+        let tint = if s.kind == Kind::Portal && !portal_active {
+            0.35
+        } else {
+            1.0
+        };
         let fogf = (tr_y / fog_dist).min(1.0);
         let fr = fog[0] * 255.0;
         let fg = fog[1] * 255.0;

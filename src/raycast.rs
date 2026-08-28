@@ -20,7 +20,11 @@ impl Fb {
         let img = Image::gen_image_color(RW as u16, RH as u16, BLACK);
         let tex = Texture2D::from_image(&img);
         tex.set_filter(FilterMode::Nearest);
-        Fb { img, tex, zbuf: vec![1e9; RW] }
+        Fb {
+            img,
+            tex,
+            zbuf: vec![1e9; RW],
+        }
     }
 
     #[inline(always)]
@@ -81,8 +85,16 @@ pub struct RayHit {
 pub fn cast_ray(level: &Level, px: f32, py: f32, rdx: f32, rdy: f32) -> RayHit {
     let mut map_x = px.floor() as i32;
     let mut map_y = py.floor() as i32;
-    let delta_x = if rdx.abs() < 1e-8 { 1e8 } else { (1.0 / rdx).abs() };
-    let delta_y = if rdy.abs() < 1e-8 { 1e8 } else { (1.0 / rdy).abs() };
+    let delta_x = if rdx.abs() < 1e-8 {
+        1e8
+    } else {
+        (1.0 / rdx).abs()
+    };
+    let delta_y = if rdy.abs() < 1e-8 {
+        1e8
+    } else {
+        (1.0 / rdy).abs()
+    };
     let (step_x, mut side_x) = if rdx < 0.0 {
         (-1, (px - map_x as f32) * delta_x)
     } else {
@@ -112,10 +124,23 @@ pub fn cast_ray(level: &Level, px: f32, py: f32, rdx: f32, rdy: f32) -> RayHit {
         }
     }
 
-    let dist = if side == 0 { side_x - delta_x } else { side_y - delta_y };
+    let dist = if side == 0 {
+        side_x - delta_x
+    } else {
+        side_y - delta_y
+    };
     let dist = dist.max(0.0001);
-    let hit = if side == 0 { py + dist * rdy } else { px + dist * rdx };
-    RayHit { dist, wall, side, wall_x: hit - hit.floor() }
+    let hit = if side == 0 {
+        py + dist * rdy
+    } else {
+        px + dist * rdx
+    };
+    RayHit {
+        dist,
+        wall,
+        side,
+        wall_x: hit - hit.floor(),
+    }
 }
 
 /// Renderiza todas las columnas de pared en el framebuffer

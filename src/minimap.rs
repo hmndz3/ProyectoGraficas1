@@ -13,9 +13,28 @@ pub fn draw_minimap(level: &Level, player: &Player, sprites: &[Sprite], portal_a
     let ox = screen_width() - w - 14.0;
     let oy = 14.0;
 
-    draw_rectangle(ox - 4.0, oy - 4.0, w + 8.0, h + 8.0, Color::new(0.02, 0.02, 0.05, 0.72));
-    draw_rectangle_lines(ox - 4.0, oy - 4.0, w + 8.0, h + 8.0, 2.0, Color::new(0.9, 0.8, 0.5, 0.9));
-    draw_text("MAPA", ox, oy + h + 18.0, 18.0, Color::new(0.9, 0.8, 0.5, 0.9));
+    draw_rectangle(
+        ox - 4.0,
+        oy - 4.0,
+        w + 8.0,
+        h + 8.0,
+        Color::new(0.02, 0.02, 0.05, 0.72),
+    );
+    draw_rectangle_lines(
+        ox - 4.0,
+        oy - 4.0,
+        w + 8.0,
+        h + 8.0,
+        2.0,
+        Color::new(0.9, 0.8, 0.5, 0.9),
+    );
+    draw_text(
+        "MAPA",
+        ox,
+        oy + h + 18.0,
+        18.0,
+        Color::new(0.9, 0.8, 0.5, 0.9),
+    );
 
     let wall_colors = [
         Color::new(0.85, 0.82, 0.75, 0.95),
@@ -58,6 +77,13 @@ pub fn draw_minimap(level: &Level, player: &Player, sprites: &[Sprite], portal_a
     let px = ox + player.x * cell;
     let py = oy + player.y * cell;
     let (dx, dy) = player.dir_vec();
-    draw_line(px, py, px + dx * 10.0, py + dy * 10.0, 2.0, Color::new(0.3, 1.0, 0.4, 0.9));
+    draw_line(
+        px,
+        py,
+        px + dx * 10.0,
+        py + dy * 10.0,
+        2.0,
+        Color::new(0.3, 1.0, 0.4, 0.9),
+    );
     draw_circle(px, py, 3.2, Color::new(0.3, 1.0, 0.4, 1.0));
 }

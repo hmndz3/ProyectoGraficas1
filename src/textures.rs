@@ -11,7 +11,11 @@ pub struct Tex {
 
 impl Tex {
     pub fn new(w: usize, h: usize) -> Self {
-        Tex { w, h, px: vec![[0, 0, 0, 0]; w * h] }
+        Tex {
+            w,
+            h,
+            px: vec![[0, 0, 0, 0]; w * h],
+        }
     }
 
     #[inline(always)]
@@ -29,7 +33,8 @@ impl Tex {
 
 // hash determinista para ruido
 fn hash(x: u32, y: u32, seed: u32) -> f32 {
-    let mut h = x.wrapping_mul(374761393) ^ y.wrapping_mul(668265263) ^ seed.wrapping_mul(2246822519);
+    let mut h =
+        x.wrapping_mul(374761393) ^ y.wrapping_mul(668265263) ^ seed.wrapping_mul(2246822519);
     h = (h ^ (h >> 13)).wrapping_mul(1274126177);
     ((h ^ (h >> 16)) & 0xffff) as f32 / 65535.0
 }

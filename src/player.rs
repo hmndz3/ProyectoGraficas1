@@ -13,14 +13,21 @@ pub struct Player {
     pub x: f32,
     pub y: f32,
     pub dir: f32,
-    pub bob: f32,     // fase de balanceo al caminar
-    pub moving: f32,  // cuanta velocidad lleva (para el bob del arma)
-    pub sens: f32,    // multiplicador de sensibilidad del mouse
+    pub bob: f32,    // fase de balanceo al caminar
+    pub moving: f32, // cuanta velocidad lleva (para el bob del arma)
+    pub sens: f32,   // multiplicador de sensibilidad del mouse
 }
 
 impl Player {
     pub fn new(spawn: (f32, f32), dir: f32) -> Self {
-        Player { x: spawn.0, y: spawn.1, dir, bob: 0.0, moving: 0.0, sens: 1.0 }
+        Player {
+            x: spawn.0,
+            y: spawn.1,
+            dir,
+            bob: 0.0,
+            moving: 0.0,
+            sens: 1.0,
+        }
     }
 
     pub fn dir_vec(&self) -> (f32, f32) {
@@ -83,7 +90,11 @@ impl Player {
 
         let len = (mx * mx + my * my).sqrt();
         if len > 0.001 {
-            let speed = if is_key_down(KeyCode::LeftShift) { RUN_SPEED } else { MOVE_SPEED };
+            let speed = if is_key_down(KeyCode::LeftShift) {
+                RUN_SPEED
+            } else {
+                MOVE_SPEED
+            };
             self.try_move(level, mx / len * speed * dt, my / len * speed * dt);
             self.bob += dt * speed * 2.4;
             self.moving = (self.moving + dt * 6.0).min(1.0);

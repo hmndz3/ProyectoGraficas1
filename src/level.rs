@@ -35,7 +35,13 @@ impl Level {
         let mut spirits = Vec::new();
         let mut portal = (1.5, 1.5);
         for (y, row) in def.grid.iter().enumerate() {
-            assert_eq!(row.len(), w, "fila {} de '{}' con largo distinto", y, def.name);
+            assert_eq!(
+                row.len(),
+                w,
+                "fila {} de '{}' con largo distinto",
+                y,
+                def.name
+            );
             for (x, ch) in row.bytes().enumerate() {
                 let cx = x as f32 + 0.5;
                 let cy = y as f32 + 0.5;
@@ -49,7 +55,16 @@ impl Level {
                 }
             }
         }
-        Level { w, h, cells, spawn, spawn_dir: 0.0, cards, spirits, portal }
+        Level {
+            w,
+            h,
+            cells,
+            spawn,
+            spawn_dir: 0.0,
+            cards,
+            spirits,
+            portal,
+        }
     }
 
     #[inline(always)]
@@ -214,10 +229,22 @@ mod tests {
         let reach = |p: (f32, f32)| vis[p.1 as usize * lv.w + p.0 as usize];
         assert_eq!(lv.cards.len(), 3, "{}: deben ser 3 cartas", def.name);
         for (i, c) in lv.cards.iter().enumerate() {
-            assert!(reach(*c), "{}: carta {} inalcanzable en {:?}", def.name, i, c);
+            assert!(
+                reach(*c),
+                "{}: carta {} inalcanzable en {:?}",
+                def.name,
+                i,
+                c
+            );
         }
         for (i, s) in lv.spirits.iter().enumerate() {
-            assert!(reach(*s), "{}: espiritu {} inalcanzable en {:?}", def.name, i, s);
+            assert!(
+                reach(*s),
+                "{}: espiritu {} inalcanzable en {:?}",
+                def.name,
+                i,
+                s
+            );
         }
         assert!(reach(lv.portal), "{}: portal inalcanzable", def.name);
     }

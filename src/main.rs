@@ -49,12 +49,30 @@ impl World {
         let player = Player::new(level.spawn, level.spawn_dir);
         let mut sprites = Vec::new();
         for (i, &(x, y)) in level.cards.iter().enumerate() {
-            sprites.push(Sprite { x, y, kind: Kind::Card, alive: true, phase: i as f32 * 1.7 });
+            sprites.push(Sprite {
+                x,
+                y,
+                kind: Kind::Card,
+                alive: true,
+                phase: i as f32 * 1.7,
+            });
         }
         for (i, &(x, y)) in level.spirits.iter().enumerate() {
-            sprites.push(Sprite { x, y, kind: Kind::Spirit, alive: true, phase: i as f32 * 2.3 + 0.5 });
+            sprites.push(Sprite {
+                x,
+                y,
+                kind: Kind::Spirit,
+                alive: true,
+                phase: i as f32 * 2.3 + 0.5,
+            });
         }
-        sprites.push(Sprite { x: level.portal.0, y: level.portal.1, kind: Kind::Portal, alive: true, phase: 0.0 });
+        sprites.push(Sprite {
+            x: level.portal.0,
+            y: level.portal.1,
+            kind: Kind::Portal,
+            alive: true,
+            phase: 0.0,
+        });
 
         let cards_total = level.cards.len();
         World {
@@ -169,7 +187,13 @@ async fn main() {
                         if perp > 0.42 {
                             continue;
                         }
-                        let hit = raycast::cast_ray(&w.level, w.player.x, w.player.y, dx / dist, dy / dist);
+                        let hit = raycast::cast_ray(
+                            &w.level,
+                            w.player.x,
+                            w.player.y,
+                            dx / dist,
+                            dy / dist,
+                        );
                         if hit.dist + 0.2 < dist {
                             continue; // pared en medio
                         }
@@ -202,7 +226,8 @@ async fn main() {
 
                 // entrar al portal
                 if w.portal_active {
-                    let d2 = (w.level.portal.0 - w.player.x).powi(2) + (w.level.portal.1 - w.player.y).powi(2);
+                    let d2 = (w.level.portal.0 - w.player.x).powi(2)
+                        + (w.level.portal.1 - w.player.y).powi(2);
                     if d2 < 0.5 {
                         audio.sfx(&audio.win);
                         state = State::Success {
@@ -215,27 +240,56 @@ async fn main() {
                 // render 3D
                 fb.clear(def.ceil, def.floor, def.fog, def.fog_dist);
                 raycast::render_walls(
-                    &mut fb, &w.level, &w.walls,
-                    w.player.x, w.player.y, w.player.dir,
-                    def.fog, def.fog_dist,
+                    &mut fb,
+                    &w.level,
+                    &w.walls,
+                    w.player.x,
+                    w.player.y,
+                    w.player.dir,
+                    def.fog,
+                    def.fog_dist,
                 );
                 sprites::render_sprites(
-                    &mut fb, &w.sprites,
-                    &w.card_tex, &w.spirit_tex, &w.portal_tex,
-                    w.player.x, w.player.y, w.player.dir, t,
-                    def.fog, def.fog_dist, w.portal_active,
+                    &mut fb,
+                    &w.sprites,
+                    &w.card_tex,
+                    &w.spirit_tex,
+                    &w.portal_tex,
+                    w.player.x,
+                    w.player.y,
+                    w.player.dir,
+                    t,
+                    def.fog,
+                    def.fog_dist,
+                    w.portal_active,
                 );
                 fb.present();
                 ui::draw_vignette();
 
                 // HUD + minimapa
-                let spirits_left = w.sprites.iter().filter(|s| s.alive && s.kind == Kind::Spirit).count();
+                let spirits_left = w
+                    .sprites
+                    .iter()
+                    .filter(|s| s.alive && s.kind == Kind::Spirit)
+                    .count();
                 ui::draw_hud(
-                    w.level_idx, w.cards_got, w.cards_total, spirits_left,
-                    w.portal_active, w.flash, w.player.bob, w.player.moving,
+                    w.level_idx,
+                    w.cards_got,
+                    w.cards_total,
+                    spirits_left,
+                    w.portal_active,
+                    w.flash,
+                    w.player.bob,
+                    w.player.moving,
                 );
                 minimap::draw_minimap(&w.level, &w.player, &w.sprites, w.portal_active);
-                draw_text(format!("FPS {}", get_fps()), 20.0, screen_height() - 12.0, 18.0, Color::new(1.0, 1.0, 1.0, 0.5));
+                draw_text(
+                    format!("FPS {}", get_fps()),
+                    20.0,
+                    screen_height() - 12.0,
+                    18.0,
+                    Color::new(1.0, 1.0, 1.0, 0.5),
+                );
 
                 if is_key_pressed(KeyCode::Escape) {
                     state = State::Menu;
