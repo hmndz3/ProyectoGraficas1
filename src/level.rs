@@ -13,6 +13,7 @@ pub struct LevelDef {
     pub accent: [f32; 3],
     pub seed: u32,
     pub inverted: bool, // controles invertidos (The Hanged Man)
+    pub reveal: bool,   // el minimapa se descubre al explorar (The Hermit)
 }
 
 pub struct Level {
@@ -120,6 +121,7 @@ pub const LEVEL_FOOL: LevelDef = LevelDef {
     accent: [1.0, 1.0, 1.0],
     seed: 11,
     inverted: false,
+    reveal: false,
 };
 
 // ------------------------------------------------------------------
@@ -161,6 +163,7 @@ pub const LEVEL_HANGED: LevelDef = LevelDef {
     accent: [0.85, 0.95, 1.00],
     seed: 22,
     inverted: true,
+    reveal: false,
 };
 
 // ------------------------------------------------------------------
@@ -202,6 +205,7 @@ pub const LEVEL_HERMIT: LevelDef = LevelDef {
     accent: [0.92, 0.88, 0.70],
     seed: 33,
     inverted: false,
+    reveal: true,
 };
 
 pub fn all_levels() -> Vec<&'static LevelDef> {

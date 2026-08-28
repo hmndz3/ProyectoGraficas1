@@ -6,7 +6,16 @@ use crate::player::Player;
 use crate::sprites::{Kind, Sprite};
 use macroquad::prelude::*;
 
-pub fn draw_minimap(level: &Level, player: &Player, sprites: &[Sprite], portal_active: bool) {
+pub fn draw_minimap(
+    level: &Level,
+    player: &Player,
+    sprites: &[Sprite],
+    portal_active: bool,
+    explored: &[bool],
+    reveal: bool,
+) {
+    // con `reveal` solo se dibuja lo ya explorado (The Hermit)
+    let visible = |x: usize, y: usize| !reveal || explored[y * level.w + x];
     let cell = 7.0;
     let w = level.w as f32 * cell;
     let h = level.h as f32 * cell;
@@ -46,7 +55,7 @@ pub fn draw_minimap(level: &Level, player: &Player, sprites: &[Sprite], portal_a
     for y in 0..level.h {
         for x in 0..level.w {
             let c = level.cells[y * level.w + x];
-            if c > 0 {
+            if c > 0 && visible(x, y) {
                 draw_rectangle(
                     ox + x as f32 * cell,
                     oy + y as f32 * cell,
@@ -59,6 +68,9 @@ pub fn draw_minimap(level: &Level, player: &Player, sprites: &[Sprite], portal_a
     }
 
     for s in sprites.iter().filter(|s| s.alive) {
+        if !visible(s.x as usize, s.y as usize) {
+            continue;
+        }
         let (color, r) = match s.kind {
             Kind::Card => (Color::new(1.0, 0.85, 0.2, 1.0), 2.6),
             Kind::Spirit => (Color::new(0.6, 0.8, 1.0, 0.8), 2.0),
